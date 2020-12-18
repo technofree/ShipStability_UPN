@@ -37,20 +37,21 @@ void readKeypad(){
 
   if(keyState) {
     Serial.println(keyState);
+
+    if(keyState == '1') { irsend.sendNEC(0xAB001CD, 32); } // Serial.println(179306957, HEX);
+    if(keyState == '2') { irsend.sendNEC(0xAB002CD, 32); } // Serial.println(179307213, HEX);
+    if(keyState == '3') { irsend.sendNEC(0xAB004CD, 32); } // Serial.println(179307725, HEX);
+    if(keyState == '4') { irsend.sendNEC(0xAB008CD, 32); } // Serial.println(179308749, HEX);
+    if(keyState == '5') { irsend.sendNEC(0xAB010CD, 32); } // Serial.println(179310797, HEX);
+    if(keyState == '6') { irsend.sendNEC(0xAB020CD, 32); } // Serial.println(179314893, HEX);
+    if(keyState == '7') { irsend.sendNEC(0xAB040CD, 32); } // Serial.println(179323085, HEX);
+    if(keyState == '8') { irsend.sendNEC(0xAB080CD, 32); } // Serial.println(179339469, HEX);
+    if(keyState == '9') { irsend.sendNEC(0xAB100CD, 32); } // Serial.println(179372237, HEX);
+    if(keyState == '*') { irsend.sendNEC(0xAB200CD, 32); } // Serial.println(179437773, HEX);
+    if(keyState == '0') { irsend.sendNEC(0xAB400CD, 32); } // Serial.println(179568845, HEX);
+    if(keyState == '#') { irsend.sendNEC(0xAB800CD, 32); } // Serial.println(179830989, HEX);
+    delay(40);
   }
-  
-  if(keyState == '1') { irsend.sendNEC(0xAB001CD, 32); } // Serial.println(179306957, HEX);
-  if(keyState == '2') { irsend.sendNEC(0xAB002CD, 32); } // Serial.println(179307213, HEX);
-  if(keyState == '3') { irsend.sendNEC(0xAB004CD, 32); } // Serial.println(179307725, HEX);
-  if(keyState == '4') { irsend.sendNEC(0xAB008CD, 32); } // Serial.println(179308749, HEX);
-  if(keyState == '5') { irsend.sendNEC(0xAB010CD, 32); } // Serial.println(179310797, HEX);
-  if(keyState == '6') { irsend.sendNEC(0xAB020CD, 32); } // Serial.println(179314893, HEX);
-  if(keyState == '7') { irsend.sendNEC(0xAB040CD, 32); } // Serial.println(179323085, HEX);
-  if(keyState == '8') { irsend.sendNEC(0xAB080CD, 32); } // Serial.println(179339469, HEX);
-  if(keyState == '9') { irsend.sendNEC(0xAB100CD, 32); } // Serial.println(179372237, HEX);
-  if(keyState == '*') { irsend.sendNEC(0xAB200CD, 32); } // Serial.println(179437773, HEX);
-  if(keyState == '0') { irsend.sendNEC(0xAB400CD, 32); } // Serial.println(179568845, HEX);
-  if(keyState == '#') { irsend.sendNEC(0xAB800CD, 32); } // Serial.println(179830989, HEX);
 }
 
 void keypadEvent(KeypadEvent key){

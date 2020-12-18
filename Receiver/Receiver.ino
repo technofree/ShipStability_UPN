@@ -51,52 +51,52 @@ void loop() {
 }
 
 void translateIR(){
-  ResetMotor();
+  //ResetMotor();
   switch(results.value) {
     case 0xAB001CD: // Motor 1 Left
-      digitalWrite(M1R, LOW);
+      digitalWrite(M1R, HIGH);
       analogWrite(M1EN, 255);
       break;
     case 0xAB002CD: // Motor 1 Right
-      digitalWrite(M1R, LOW);
+      digitalWrite(M1R, HIGH);
       analogWrite(M1EN, 255);
       break;
     case 0xAB004CD: // Motor 2 Left
-      digitalWrite(M2R, LOW);
+      digitalWrite(M2R, HIGH);
       analogWrite(M2EN, 255);
       break;
     case 0xAB008CD: // Motor 2 Right
-      digitalWrite(M2R, LOW);
+      digitalWrite(M2R, HIGH);
       analogWrite(M2EN, 255);
       break;
     case 0xAB010CD: // Motor 3 Left
-      digitalWrite(M3L, LOW);
+      digitalWrite(M3L, HIGH);
       analogWrite(M3EN, 255);
       break;
     case 0xAB020CD: // Motor 3 Right
-      digitalWrite(M3R, LOW);
+      digitalWrite(M3R, HIGH);
       analogWrite(M3EN, 255);
       break;
     case 0xAB040CD: // Motor 4 Left
-      digitalWrite(M4L, LOW);
+      digitalWrite(M4L, HIGH);
       analogWrite(M4EN, 255);
       break;
     case 0xAB080CD: // Motor 4 Right
-      digitalWrite(M4R, LOW);
+      digitalWrite(M4R, HIGH);
       analogWrite(M4EN, 255);
       break;
   }
 }
 
 void ResetMotor(){
-  digitalWrite(M1L, HIGH);
-  digitalWrite(M1R, HIGH);
-  digitalWrite(M2L, HIGH);
-  digitalWrite(M2R, HIGH);
-  digitalWrite(M3L, HIGH);
-  digitalWrite(M3R, HIGH);
-  digitalWrite(M4L, HIGH);
-  digitalWrite(M4R, HIGH);
+  digitalWrite(M1L, LOW);
+  digitalWrite(M1R, LOW);
+  digitalWrite(M2L, LOW);
+  digitalWrite(M2R, LOW);
+  digitalWrite(M3L, LOW);
+  digitalWrite(M3R, LOW);
+  digitalWrite(M4L, LOW);
+  digitalWrite(M4R, LOW);
   digitalWrite(M1EN, LOW);
   digitalWrite(M2EN, LOW);
   digitalWrite(M3EN, LOW);
