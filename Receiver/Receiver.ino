@@ -1,7 +1,7 @@
 #include <IRremote.h>
 
 /* motor control scope */
-int M1L = 0;
+int M1L = 1;
 int M1R = 4;
 int M2L = 5;
 int M2R = 7;
@@ -39,6 +39,7 @@ void setup() {
   Serial.println("Enabling IRin");
   irrecv.enableIRIn();
   Serial.println("Enabled IRin");
+  digitalWrite(M1L, LOW);
 }
 
 void loop() {
@@ -54,7 +55,7 @@ void translateIR(){
   //ResetMotor();
   switch(results.value) {
     case 0xAB001CD: // Motor 1 Left
-      digitalWrite(M1R, HIGH);
+      digitalWrite(M1L, HIGH);
       analogWrite(M1EN, 255);
       break;
     case 0xAB002CD: // Motor 1 Right
@@ -62,7 +63,7 @@ void translateIR(){
       analogWrite(M1EN, 255);
       break;
     case 0xAB004CD: // Motor 2 Left
-      digitalWrite(M2R, HIGH);
+      digitalWrite(M2L, HIGH);
       analogWrite(M2EN, 255);
       break;
     case 0xAB008CD: // Motor 2 Right

@@ -17,8 +17,8 @@ char keys[ROWS][COLS] =
   {'*','0','#'}
 };
 
-uint8_t rowPins[ROWS] = {24, 34, 32, 28};
-uint8_t colPins[COLS] = {26, 22, 30};
+uint8_t rowPins[ROWS] = {13, 8, 9, 11};
+uint8_t colPins[COLS] = {12, 7, 10};
 Keypad kpd = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 char keyState = '\0';
