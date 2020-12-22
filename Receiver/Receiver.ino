@@ -1,21 +1,21 @@
 #include <IRremote.h>
 
 /* motor control scope */
-int M1L = 1;
-int M1R = 4;
-int M2L = 5;
-int M2R = 7;
+int M1L = 12;
+int M1R = 11;
+int M2L = 3;
+int M2R = 2;
 int M3L = 8;
-int M3R = 12;
-int M4L = 3;
-int M4R = 13;
-int M1EN = 6;
-int M2EN = 9;
+int M3R = 7;
+int M4L = 6;
+int M4R = 5;
+int M1EN = 13;
+int M2EN = 4;
 int M3EN = 10;
-int M4EN = 11;
+int M4EN = 9;
 
 /* Infrared Receiver Scope */
-int RECV_PIN = 2;
+int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 unsigned long key_value = 0;
