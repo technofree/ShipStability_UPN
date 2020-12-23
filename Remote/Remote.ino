@@ -51,6 +51,8 @@ void readKeypad(){
     if(keyState == '0') { irsend.sendNEC(0xAB400CD, 32); } // Serial.println(179568845, HEX);
     if(keyState == '#') { irsend.sendNEC(0xAB800CD, 32); } // Serial.println(179830989, HEX);
     delay(40);
+  } else {
+    irsend.sendNEC(0xAB000CD, 32); // Send Release code
   }
 }
 

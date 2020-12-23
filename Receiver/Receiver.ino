@@ -20,6 +20,10 @@ uint8_t mCmdData = 0x0;
 /* Motor Enable Data */
 uint8_t mEnData[4];
 
+uint8_t stateBtn;
+uint8_t btnRepeat;
+uint8_t foundBtn;
+
 /* Infrared Receiver Scope */
 int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
@@ -60,6 +64,15 @@ void loop() {
     irrecv.resume(); // Receive the next value
   }
 
+  if(foundBtn==1){
+    if(stateBtn != 0)
+      digitalWrite(13, LOW);
+  } else {
+    digitalWrite(13, HIGH);
+    foundBtn = 0;
+    delay(180);
+  }
+  
   /* Send Command To Motor */
   digitalWrite(M1L, (mCmdData & (1 << 0)) >> 0);
   digitalWrite(M1R, (mCmdData & (1 << 1)) >> 1);
@@ -80,42 +93,69 @@ void loop() {
 }
 
 void translateIR(){
+  uint8_t isRepeat = 0;
+  uint8_t newBtn = 0;
+  
   switch(results.value) {
     case 0xAB001CD: // Motor 1 Left
       mCmdData = mCmdData | 0x01;
       mEnData[0] = 255;
+      newBtn = 1;
       break;
     case 0xAB002CD: // Motor 1 Right
       mCmdData = mCmdData | 0x02;
       mEnData[0] = 255;
+      newBtn = 2;
       break;
     case 0xAB004CD: // Motor 2 Left
       mCmdData = mCmdData | 0x04;
       mEnData[1] = 255;
+      newBtn = 4;
       break;
     case 0xAB008CD: // Motor 2 Right
       mCmdData = mCmdData | 0x08;
       mEnData[1] = 255;
+      newBtn = 8;
       break;
     case 0xAB010CD: // Motor 3 Left
       mCmdData = mCmdData | 0x10;
       mEnData[2] = 255;
+      newBtn = 16;
       break;
     case 0xAB020CD: // Motor 3 Right
       mCmdData = mCmdData | 0x20;
       mEnData[2] = 255;
+      newBtn = 32;
       break;
     case 0xAB040CD: // Motor 4 Left
       mCmdData = mCmdData | 0x40;
       mEnData[3] = 255;
+      newBtn = 64;
       break;
     case 0xAB080CD: // Motor 4 Right
       mCmdData = mCmdData | 0x80;
       mEnData[3] = 255;
+      newBtn = 128;
       break;
     case 0xFFFFFFFF:
+      isRepeat = 1;
+      break;
+    default:
+      Serial.println("Unused Btn");
+      newBtn = 255;
       break;
   }
+
+  if(newBtn != 0){
+    stateBtn = newBtn;
+    btnRepeat = stateBtn;
+  } else {
+    if(isRepeat)
+      stateBtn = btnRepeat;
+  }
+
+  if(stateBtn != 0)
+    foundBtn = 1;
 }
 
 void ResetMotor(){
