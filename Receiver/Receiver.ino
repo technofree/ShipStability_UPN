@@ -75,6 +75,8 @@ void loop() {
   analogWrite(M2EN, mEnData[1]);
   analogWrite(M3EN, mEnData[2]);
   analogWrite(M4EN, mEnData[3]);
+
+  delay(180);
 }
 
 void translateIR(){
@@ -110,6 +112,8 @@ void translateIR(){
     case 0xAB080CD: // Motor 4 Right
       mCmdData = mCmdData | 0x80;
       mEnData[3] = 255;
+      break;
+    case 0xFFFFFFFF:
       break;
   }
 }
