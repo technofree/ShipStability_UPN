@@ -14,6 +14,12 @@ int M2EN = 4;
 int M3EN = 10;
 int M4EN = 9;
 
+/* Motor Command Data */
+uint8_t mCmdData = 0x0;
+
+/* Motor Enable Data */
+uint8_t mEnData[4];
+
 /* Infrared Receiver Scope */
 int RECV_PIN = 14;
 IRrecv irrecv(RECV_PIN);
@@ -36,70 +42,81 @@ void setup() {
   pinMode(M3EN,OUTPUT);
   pinMode(M4EN,OUTPUT);
 
+  for(uint8_t i = 0; i<4; i++)
+    mEnData[i] = 0;
+    
   Serial.println("Enabling IRin");
   irrecv.enableIRIn();
   Serial.println("Enabled IRin");
-  digitalWrite(M1L, LOW);
 }
 
 void loop() {
+  ResetMotor();
+  
   // Receive Infrared remote code
   if (irrecv.decode(&results)) {
     Serial.println(results.value, HEX);
     translateIR();
     irrecv.resume(); // Receive the next value
   }
+
+  /* Send Command To Motor */
+  digitalWrite(M1L, (mCmdData & (1 << 0)) >> 0);
+  digitalWrite(M1R, (mCmdData & (1 << 1)) >> 1);
+  digitalWrite(M2L, (mCmdData & (1 << 2)) >> 2);
+  digitalWrite(M2R, (mCmdData & (1 << 3)) >> 3);
+  digitalWrite(M3L, (mCmdData & (1 << 4)) >> 4);
+  digitalWrite(M3R, (mCmdData & (1 << 5)) >> 5);
+  digitalWrite(M4L, (mCmdData & (1 << 6)) >> 6);
+  digitalWrite(M4R, (mCmdData & (1 << 7)) >> 7);
+
+  /* Send Enable To Motor */
+  analogWrite(M1EN, mEnData[0]);
+  analogWrite(M2EN, mEnData[1]);
+  analogWrite(M3EN, mEnData[2]);
+  analogWrite(M4EN, mEnData[3]);
 }
 
 void translateIR(){
-  //ResetMotor();
   switch(results.value) {
     case 0xAB001CD: // Motor 1 Left
-      digitalWrite(M1L, HIGH);
-      analogWrite(M1EN, 255);
+      mCmdData = mCmdData | 0x01;
+      mEnData[0] = 255;
       break;
     case 0xAB002CD: // Motor 1 Right
-      digitalWrite(M1R, HIGH);
-      analogWrite(M1EN, 255);
+      mCmdData = mCmdData | 0x02;
+      mEnData[0] = 255;
       break;
     case 0xAB004CD: // Motor 2 Left
-      digitalWrite(M2L, HIGH);
-      analogWrite(M2EN, 255);
+      mCmdData = mCmdData | 0x04;
+      mEnData[1] = 255;
       break;
     case 0xAB008CD: // Motor 2 Right
-      digitalWrite(M2R, HIGH);
-      analogWrite(M2EN, 255);
+      mCmdData = mCmdData | 0x08;
+      mEnData[1] = 255;
       break;
     case 0xAB010CD: // Motor 3 Left
-      digitalWrite(M3L, HIGH);
-      analogWrite(M3EN, 255);
+      mCmdData = mCmdData | 0x10;
+      mEnData[2] = 255;
       break;
     case 0xAB020CD: // Motor 3 Right
-      digitalWrite(M3R, HIGH);
-      analogWrite(M3EN, 255);
+      mCmdData = mCmdData | 0x20;
+      mEnData[2] = 255;
       break;
     case 0xAB040CD: // Motor 4 Left
-      digitalWrite(M4L, HIGH);
-      analogWrite(M4EN, 255);
+      mCmdData = mCmdData | 0x40;
+      mEnData[3] = 255;
       break;
     case 0xAB080CD: // Motor 4 Right
-      digitalWrite(M4R, HIGH);
-      analogWrite(M4EN, 255);
+      mCmdData = mCmdData | 0x80;
+      mEnData[3] = 255;
       break;
   }
 }
 
 void ResetMotor(){
-  digitalWrite(M1L, LOW);
-  digitalWrite(M1R, LOW);
-  digitalWrite(M2L, LOW);
-  digitalWrite(M2R, LOW);
-  digitalWrite(M3L, LOW);
-  digitalWrite(M3R, LOW);
-  digitalWrite(M4L, LOW);
-  digitalWrite(M4R, LOW);
-  digitalWrite(M1EN, LOW);
-  digitalWrite(M2EN, LOW);
-  digitalWrite(M3EN, LOW);
-  digitalWrite(M4EN, LOW);
+  mCmdData = 0x0;
+
+  for(uint8_t i = 0; i<4; i++)
+    mEnData[i] = 0;
 }
