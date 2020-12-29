@@ -65,7 +65,7 @@ void loop() {
   }
 
   if(foundBtn==1){
-    if(stateBtn != 0)
+    if(stateBtn != 0 && stateBtn != 255)
       /* update mCmdData */
       mCmdData = mCmdData | stateBtn;
 
