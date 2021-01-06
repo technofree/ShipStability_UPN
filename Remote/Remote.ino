@@ -1,9 +1,11 @@
+#include <LowPower.h>
 #include <IRremote.h>
 #include <Keypad.h>
 
 /* constant */
 const uint8_t ROWS = 4;
 const uint8_t COLS = 3;
+const int wakeUpPin = 5;
 
 /* infrared scope */
 IRsend irsend;
@@ -17,18 +19,30 @@ char keys[ROWS][COLS] =
   {'*','0','#'}
 };
 
-uint8_t rowPins[ROWS] = {13, 8, 9, 11};
-uint8_t colPins[COLS] = {12, 7, 10};
+uint8_t rowPins[ROWS] = {7, 8, 9, 11};
+uint8_t colPins[COLS] = {12, 6, 10};
 Keypad kpd = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 char keyState = '\0';
 
 void setup() {
   Serial.begin(9600);
+  pinMode(wakeUpPin, INPUT);
   kpd.addEventListener(keypadEvent);
 }
 
 void loop() {
+  // Allow wake up pin to trigger interrupt on low
+  attachInterrupt(0, wakeUp, LOW);
+
+  // Enter power down state with ADC and BOD module disabled.
+  // Wake up when wake up pin is low.
+  digitalWrite(LED_BUILTIN, LOW);
+  LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF);
+
+  // Disable external pin interrupt on wake up pin.
+  detachInterrupt(0); 
+  
   readKeypad();
 }
 
@@ -78,4 +92,9 @@ void keypadEvent(KeypadEvent key){
         keyState = '\0';
         break;
   }
+}
+
+void wakeUp()
+{
+  // Just a handler for the pin interrupt.  
 }
