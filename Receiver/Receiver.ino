@@ -5,8 +5,8 @@ int M1L = 15;
 int M1R = 16;
 int M2L = 22;
 int M2R = 23;
-int M3L = 8;
-int M3R = 7;
+int M3L = 27;
+int M3R = 26;
 int M4L = 6;
 int M4R = 5;
 int M1EN = 2;
@@ -25,7 +25,7 @@ uint8_t btnRepeat;
 uint8_t foundBtn;
 
 /* Infrared Receiver Scope */
-int RECV_PIN = 14;
+int RECV_PIN = 21;
 IRrecv irrecv(RECV_PIN);
 decode_results results;
 unsigned long key_value = 0;
